@@ -1,0 +1,9 @@
+{
+  "room": "skipli-pool",
+  "maxDiskBytes": 21474836480,
+  "maxUrlLength": 100000,
+  "signalingPort": 8080,
+  "iceServers": [
+    { "urls": "stun:TUO_VPS_IP:3478" }
+  ]
+}
