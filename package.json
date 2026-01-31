@@ -1,0 +1,12 @@
+{
+  "name": "skipli-pool-node",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node signaling.js & node pool-node.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.0",
+    "wrtc": "^0.4.7"
+  }
+}
