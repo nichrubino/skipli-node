@@ -1,8 +1,8 @@
-import fs from 'fs';
-import crypto from 'crypto';
-import wsPkg from 'ws';
+const fs = require('fs');
+const crypto = require('crypto');
+const WebSocket = require('ws');
 
-const { WebSocketServer } = wsPkg;
+/* ===== CONFIG ===== */
 
 const CONFIG = {
   port: 8080,
@@ -10,6 +10,8 @@ const CONFIG = {
   maxUrlLength: 100000,
   dbFile: './links.db.json'
 };
+
+/* ===== STORAGE ===== */
 
 if (!fs.existsSync(CONFIG.dbFile)) {
   fs.writeFileSync(CONFIG.dbFile, JSON.stringify({ totalBytes: 0, links: [] }));
@@ -22,7 +24,7 @@ function saveDb() {
 }
 
 function enforceLimit() {
-  db.links.sort((a,b)=>a.created-b.created);
+  db.links.sort((a, b) => a.created - b.created);
   while (db.totalBytes > CONFIG.maxDiskBytes && db.links.length) {
     const old = db.links.shift();
     db.totalBytes -= old.size;
@@ -52,10 +54,9 @@ function getLink(alias) {
   return db.links.find(l => l.alias === alias);
 }
 
-/* ===== SIGNALING ===== */
+/* ===== SERVER ===== */
 
-const wss = new WebSocketServer({ port: CONFIG.port });
-const peers = {};
+const wss = new WebSocket.Server({ port: CONFIG.port });
 
 wss.on('connection', ws => {
   ws.on('message', msg => {
@@ -78,4 +79,4 @@ wss.on('connection', ws => {
   });
 });
 
-console.log('🚀 Skipli pool attiva sulla porta', CONFIG.port);
+console.log('🚀 Skipli pool ATTIVA sulla porta', CONFIG.port);
